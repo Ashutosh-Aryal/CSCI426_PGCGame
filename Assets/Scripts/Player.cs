@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     private const string HIGH_SCORE_TEXT = "High Score: ";
-    private const string CURRENT_HEIGHT_TEXT = "Current Height: ";
+    private const string CURRENT_HEIGHT_TEXT = "Distance: ";
     private const KeyCode RESTART_KEY = KeyCode.R;
     private const float X_LIMIT = 6.4f;
 
@@ -98,13 +98,13 @@ public class Player : MonoBehaviour
     {
 
         float currentHeight = gameObject.transform.position.y - mySpawnLocation.y;
-        currentHeightText.text = CURRENT_HEIGHT_TEXT + Mathf.RoundToInt(currentHeight) + "m";
+        currentHeightText.text = CURRENT_HEIGHT_TEXT + Mathf.RoundToInt(currentHeight) + " light-years";
         if(currentHeight > currentHighScore)
         {
             currentHighScore = currentHeight;
         }
 
-        highScoreText.text = HIGH_SCORE_TEXT + Mathf.RoundToInt(currentHighScore) + "m";
+        highScoreText.text = HIGH_SCORE_TEXT + Mathf.RoundToInt(currentHighScore) + " light-years";
     }
 
     private void WrapXPosition()

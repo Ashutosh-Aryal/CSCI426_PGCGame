@@ -20,10 +20,12 @@ public class SoundManager : MonoBehaviour
     {
         if (s == Sound.pickup)
         {
+            audioSource.volume = 0.5f;
             audioSource.PlayOneShot(pickupSound);
         }
         else if (s == Sound.jump)
         {
+            audioSource.volume = 1.0f;
             audioSource.PlayOneShot(jumpSound);
         }
     }

@@ -728,7 +728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb641fbb7eb3c4e0c9823d6271103866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupSound: {fileID: 8300000, guid: 7d47ed76e97b9475c9bf50336e43102d, type: 3}
+  pickupSound: {fileID: 8300000, guid: fe9f92c95d08943838370832b66d02a7, type: 3}
   jumpSound: {fileID: 8300000, guid: ae5eb0ac3ad93497fa06abcdc01f15fe, type: 3}
 --- !u!1 &1280513733
 GameObject:
@@ -765,7 +765,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -60, y: -49}
-  m_SizeDelta: {x: 400, y: 30}
+  m_SizeDelta: {x: 800, y: 30}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1280513735
 MonoBehaviour:
@@ -1084,7 +1084,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 30, y: -40}
-  m_SizeDelta: {x: 400, y: 30}
+  m_SizeDelta: {x: 800, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1961614035
 MonoBehaviour:
@@ -1119,7 +1119,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Current Height: 0'
+  m_Text: 'Current: 0'
 --- !u!222 &1961614036
 CanvasRenderer:
   m_ObjectHideFlags: 0
