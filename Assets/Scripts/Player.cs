@@ -10,31 +10,22 @@ public class Player : MonoBehaviour
     private const KeyCode RESTART_KEY = KeyCode.R;
     private const float X_LIMIT = 6.4f;
 
-    [SerializeField]
-    private GameObject firstGemObject;
+    [SerializeField] private GameObject firstGemObject;
 
-    [SerializeField] 
-    private LayerMask layerMask;
+    [SerializeField] private Text currentHeightText;
 
-    [SerializeField]
-    private Text currentHeightText;
+    [SerializeField] private Text highScoreText;
+    private float currentHighScore = 0.0f;
 
-    [SerializeField]
-    private Text highScoreText;
-    
+    [SerializeField] private LayerMask layerMask;
     private Rigidbody2D rb2d;
     private BoxCollider2D box2d;
     private Vector3 mySpawnLocation;
-
-    [SerializeField] 
-    private float moveSpeed;
-    
-    [SerializeField] 
-    private float jumpVelocity;
-
-    private float currentHighScore = 0.0f;
-
+    [SerializeField] private float moveSpeed; 
+    [SerializeField] private float jumpVelocity;
     private bool canDoubleJump;
+
+    [SerializeField] private SoundManager soundManager;
 
     private void Awake()
     {
@@ -75,17 +66,20 @@ public class Player : MonoBehaviour
             canDoubleJump = true;
         }
 
+        // Jump
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (IsGrounded())
             {
                 rb2d.velocity = Vector2.up * jumpVelocity;
+                soundManager.PlaySound(SoundManager.Sound.jump);
             }
             else
             {
                 if (canDoubleJump)
                 {
                     rb2d.velocity = Vector2.up * jumpVelocity;
+                    soundManager.PlaySound(SoundManager.Sound.jump);
                     canDoubleJump = false;
                 }
             }
@@ -104,13 +98,13 @@ public class Player : MonoBehaviour
     {
 
         float currentHeight = gameObject.transform.position.y - mySpawnLocation.y;
-        currentHeightText.text = CURRENT_HEIGHT_TEXT + Mathf.RoundToInt(currentHeight);
+        currentHeightText.text = CURRENT_HEIGHT_TEXT + Mathf.RoundToInt(currentHeight) + "m";
         if(currentHeight > currentHighScore)
         {
             currentHighScore = currentHeight;
         }
 
-        highScoreText.text = HIGH_SCORE_TEXT + Mathf.RoundToInt(currentHighScore);
+        highScoreText.text = HIGH_SCORE_TEXT + Mathf.RoundToInt(currentHighScore) + "m";
     }
 
     private void WrapXPosition()
@@ -138,5 +132,6 @@ public class Player : MonoBehaviour
     public void JumpRefresh()
     {
         canDoubleJump = true;
+        soundManager.PlaySound(SoundManager.Sound.pickup);
     }
 }

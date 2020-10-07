@@ -12,8 +12,8 @@ public class RefresherRandomizer : MonoBehaviour
     private const float MIN_SPAWN_DISTANCE = 0.5f;
     private const float MAX_RANDOM_RANGE = 1000.0f;
 
+    // Static so they're shared amongst all Refreshers
     private static GameObject s_PrefabContainer = null;
-
     public static List<GameObject> s_SpawnedObjects = new List<GameObject>();
 
     private void Start()
@@ -23,6 +23,7 @@ public class RefresherRandomizer : MonoBehaviour
             s_PrefabContainer = refresherPrefab;
         }
     }
+
     public static void SpawnRefresher(Vector3 lastRefresherLocation)
     {
         float distanceScalar = Random.Range(0.0f, MAX_RANDOM_RANGE) / MAX_RANDOM_RANGE;
@@ -52,7 +53,10 @@ public class RefresherRandomizer : MonoBehaviour
             newRefresherSpawn.x = (newRefresherSpawn.x >= X_LIMIT) ? X_LIMIT : -X_LIMIT;
         }
 
-        GameObject newRefresher = Instantiate(s_PrefabContainer, newRefresherSpawn, Quaternion.identity);
+        // The refreshers should be diamond shaped
+        Quaternion rotation = Quaternion.Euler(0, 0, 45);
+        GameObject newRefresher = Instantiate(s_PrefabContainer, newRefresherSpawn, rotation);
+        newRefresher.GetComponent<FadeBehavior>().StartFadeIn(); // Make refreshers fade in
         s_SpawnedObjects.Add(newRefresher);
     }
 }
