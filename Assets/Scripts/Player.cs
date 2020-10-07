@@ -1,15 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private LayerMask layerMask;
+    private const string HIGH_SCORE_TEXT = "High Score: ";
+    private const string CURRENT_HEIGHT_TEXT = "Current Height: ";
+    private const KeyCode RESTART_KEY = KeyCode.R;
+    private const float X_LIMIT = 6.4f;
+
+    [SerializeField]
+    private GameObject firstGemObject;
+
+    [SerializeField] 
+    private LayerMask layerMask;
+
+    [SerializeField]
+    private Text currentHeightText;
+
+    [SerializeField]
+    private Text highScoreText;
+    
     private Rigidbody2D rb2d;
     private BoxCollider2D box2d;
+    private Vector3 mySpawnLocation;
 
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float jumpVelocity;
+    [SerializeField] 
+    private float moveSpeed;
+    
+    [SerializeField] 
+    private float jumpVelocity;
+
+    private float currentHighScore = 0.0f;
+
     private bool canDoubleJump;
 
     private void Awake()
@@ -18,8 +42,34 @@ public class Player : MonoBehaviour
         box2d = GetComponent<BoxCollider2D>();
     }
 
+    private void Start()
+    {
+        mySpawnLocation = gameObject.transform.position;
+    }
+
+    private void RestartGame()
+    {
+        gameObject.transform.position = mySpawnLocation;
+
+        foreach (GameObject gem in RefresherRandomizer.s_SpawnedObjects)
+        {
+            Destroy(gem);
+        }
+
+        RefresherRandomizer.s_SpawnedObjects.Clear();
+
+        firstGemObject.GetComponent<JumpRefresh>().ResetShouldSpawn();
+    }
+
     void Update()
     {
+        if(Input.GetKeyDown(RESTART_KEY))
+        {
+            RestartGame();
+        }
+
+        WrapXPosition();
+
         if (IsGrounded())
         {
             canDoubleJump = true;
@@ -41,11 +91,37 @@ public class Player : MonoBehaviour
             }
         }
 
+        SetTexts();
+
         // Movement
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         Vector2 direction = new Vector2(x, y);
         Movement(direction);
+    }
+
+    private void SetTexts()
+    {
+
+        float currentHeight = gameObject.transform.position.y - mySpawnLocation.y;
+        currentHeightText.text = CURRENT_HEIGHT_TEXT + Mathf.RoundToInt(currentHeight);
+        if(currentHeight > currentHighScore)
+        {
+            currentHighScore = currentHeight;
+        }
+
+        highScoreText.text = HIGH_SCORE_TEXT + Mathf.RoundToInt(currentHighScore);
+    }
+
+    private void WrapXPosition()
+    {
+        Vector3 currentPosition = gameObject.transform.position;
+        if (Mathf.Abs(currentPosition.x) >= Mathf.Abs(X_LIMIT))
+        {
+            currentPosition.x = (currentPosition.x >= X_LIMIT) ? -X_LIMIT : X_LIMIT;
+        }
+
+        gameObject.transform.position = currentPosition;
     }
 
     private bool IsGrounded()

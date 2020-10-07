@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class JumpRefresh : MonoBehaviour
 {
+
+    private bool shouldSpawn = true;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Player player = collision.gameObject.GetComponent<Player>();
@@ -11,13 +13,17 @@ public class JumpRefresh : MonoBehaviour
         {
             Debug.Log("Player touched refresher");
             player.JumpRefresh();
-        }
 
-        //if (collision.gameObject.CompareTag("Player"))
-        //{
-        //    Debug.Log("Player touched refresher");
-        //    Player player = collision.gameObject.GetComponent<Player>();
-        //    player.JumpRefresh();
-        //}
+            if(shouldSpawn)
+            {
+                RefresherRandomizer.SpawnRefresher(gameObject.transform.position);
+                shouldSpawn = false;
+            }
+        }
+    }
+
+    public void ResetShouldSpawn()
+    {
+        shouldSpawn = true;
     }
 }
